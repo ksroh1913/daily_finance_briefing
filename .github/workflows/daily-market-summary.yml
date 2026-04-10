@@ -1,0 +1,64 @@
+name: Daily Market Summary
+
+on:
+  schedule:
+    # Runs at 10:00 AM Asia/Seoul (01:00 UTC) every day
+    - cron: "0 1 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-market-summary
+  cancel-in-progress: false
+
+jobs:
+  generate-and-save:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install FinanceDataReader pandas jinja2
+
+      - name: Generate market summary report
+        env:
+          TZ: Asia/Seoul
+        run: |
+          # Replace this command with your actual entrypoint if different.
+          # Example alternatives:
+          #   python app/main.py
+          #   python -m app.main
+          python main.py
+
+      - name: Commit and push generated files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Adjust paths below to your generated output locations
+          git add reports/ || true
+          git add *.html || true
+
+          if git diff --cached --quiet; then
+            echo "No changes detected."
+            exit 0
+          fi
+
+          KST_DATE=$(TZ=Asia/Seoul date +'%Y-%m-%d')
+          git commit -m "chore: daily market summary (${KST_DATE} KST)"
+          git push
