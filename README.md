@@ -61,18 +61,26 @@ python main.py --serve --port 8080
 1주차 목표(스키마/수집 정규화/스냅샷) 반영:
 
 - `app/integrations/kftc/account_info_client.py`
-  - 추후 금융결제원 API로 교체 가능한 어댑터 인터페이스
-  - 현재는 `config/week1_sample_accounts.json` 샘플을 공통 모델로 정규화
+  - 금융결제원 계좌통합조회 API(`accountinfo/list`)용 어댑터
+  - 샘플 모드/라이브 모드 둘 다 지원
 - `app/storage/sqlite_repo.py`
   - `accounts`, `snapshots` 테이블 생성 및 저장
 - `app/services/portfolio_snapshot_service.py`
   - 다중 통화 계좌를 KRW로 환산해 총자산 스냅샷 집계
 - `week1_bootstrap.py`
-  - 샘플 계좌 수집 -> DB 저장 -> 스냅샷 저장까지 한번에 실행
+  - 계좌 수집 -> DB 저장 -> 스냅샷 저장까지 한번에 실행
 
 실행:
 
 ```bash
+# 샘플 모드(기본)
+python week1_bootstrap.py
+
+# 라이브 모드(금융결제원 API)
+export KFTC_USE_SAMPLE=false
+export KFTC_ACCESS_TOKEN="<token>"
+export KFTC_USER_SEQ_NO="<user_seq_no>"
+export KFTC_AUTH_CODE="<auth_code>"
 python week1_bootstrap.py
 ```
 
