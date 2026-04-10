@@ -34,7 +34,7 @@ class MarketCollector:
                         change_pct=None,
                         as_of=None,
                         status="error",
-                        error=str(exc),
+                        error=self._short_error(str(exc)),
                     )
                 time.sleep(self.RETRY_DELAY_SECONDS)
 
@@ -77,7 +77,7 @@ class MarketCollector:
             change_pct=None,
             as_of=None,
             status="error",
-            error=merged_error,
+            error=self._short_error(merged_error),
         )
 
     def _build_quote(self, section: str, label: str, symbol: str, frame: pd.DataFrame) -> MarketQuote:
@@ -139,6 +139,12 @@ class MarketCollector:
             as_of=as_of,
             status=status,
         )
+
+    @staticmethod
+    def _short_error(message: str, max_len: int = 180) -> str:
+        if len(message) <= max_len:
+            return message
+        return f"{message[:max_len-3]}..."
 
     @staticmethod
     def _normalize_frame(frame: pd.DataFrame) -> pd.DataFrame:
