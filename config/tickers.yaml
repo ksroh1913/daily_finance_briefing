@@ -1,0 +1,34 @@
+sections:
+  - name: 국내
+    items:
+      - label: 코스피
+        symbol: KS11
+      - label: 코스닥
+        symbol: KQ11
+
+  - name: 해외
+    items:
+      - label: 다우 산업
+        symbol: DJI
+      - label: 나스닥 종합
+        symbol: IXIC
+      - label: 상해 종합
+        symbol: SSEC
+      - label: 니케이225
+        symbol: N225
+
+  - name: 환율
+    items:
+      - label: 원/달러
+        symbol: USD/KRW
+      - label: 중국 위안/달러
+        symbol: CNY/USD
+
+  - name: 상품
+    items:
+      - label: 금
+        symbol: XAU/USD
+      - label: 은
+        symbol: XAG/USD
+      - label: WTI
+        symbol: CL=F

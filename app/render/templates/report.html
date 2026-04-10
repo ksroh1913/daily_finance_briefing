@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>전일 시장 요약</title>
+    <style>
+      body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f3f4f6; margin: 0; padding: 24px; color: #111827; }
+      .container { max-width: 720px; margin: 0 auto; background: #fff; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,.08); padding: 20px; }
+      h1 { margin: 0 0 6px; font-size: 28px; }
+      .meta { color: #6b7280; margin-bottom: 18px; font-size: 14px; }
+      h2 { margin-top: 20px; border-bottom: 1px solid #e5e7eb; padding-bottom: 8px; font-size: 20px; }
+      table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+      th, td { border: 1px solid #e5e7eb; padding: 10px; text-align: center; }
+      th { background: #f9fafb; }
+      .up { color: #b91c1c; font-weight: 600; }
+      .down { color: #1d4ed8; font-weight: 600; }
+      .flat { color: #6b7280; font-weight: 600; }
+      .error { color: #b45309; font-size: 12px; display: block; margin-top: 4px; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>전일 시장 요약</h1>
+      <div class="meta">생성시각: {{ generated_at }} | 기준일: {{ as_of or "N/A" }}</div>
+
+      {% for section, rows in sections.items() %}
+      <h2>{{ section }}</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>항목</th>
+            <th>종가</th>
+            <th>변동</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in rows %}
+          <tr>
+            <td>{{ row.label }}</td>
+            <td>{{ row.formatted_price if row.formatted_price is defined else row.price }}</td>
+            <td class="{{ row.status }}">
+              {% if row.change is not none and row.change_pct is not none %}
+                {{ "▲" if row.change > 0 else "▼" if row.change < 0 else "-" }} {{ "%0.2f"|format(row.change|abs) }} ({{ "%0.2f"|format(row.change_pct|abs) }}%)
+              {% else %}
+                N/A
+              {% endif %}
+              {% if row.error %}<span class="error">{{ row.error }}</span>{% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% endfor %}
+    </div>
+  </body>
+</html>
