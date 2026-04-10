@@ -55,3 +55,27 @@ python main.py --serve --port 8080
 서버 실행 후 브라우저에서 아래 URL을 열면 됩니다.
 
 - `http://localhost:8000/reports/latest.html`
+
+## 4주 로드맵 - 1주차 구현 상태
+
+1주차 목표(스키마/수집 정규화/스냅샷) 반영:
+
+- `app/integrations/kftc/account_info_client.py`
+  - 추후 금융결제원 API로 교체 가능한 어댑터 인터페이스
+  - 현재는 `config/week1_sample_accounts.json` 샘플을 공통 모델로 정규화
+- `app/storage/sqlite_repo.py`
+  - `accounts`, `snapshots` 테이블 생성 및 저장
+- `app/services/portfolio_snapshot_service.py`
+  - 다중 통화 계좌를 KRW로 환산해 총자산 스냅샷 집계
+- `week1_bootstrap.py`
+  - 샘플 계좌 수집 -> DB 저장 -> 스냅샷 저장까지 한번에 실행
+
+실행:
+
+```bash
+python week1_bootstrap.py
+```
+
+결과:
+- `reports/portfolio.db` 생성
+- 최신 스냅샷 저장
