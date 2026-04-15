@@ -114,3 +114,32 @@ python week2_dashboard.py
 python -m http.server 8000
 # http://localhost:8000/reports/portfolio-dashboard.html
 ```
+
+## 4주 로드맵 - 3주차 구현 상태
+
+3주차 목표(API 레이어: dashboard/accounts/transactions) 반영:
+
+- `app/models/transaction.py`
+  - 거래내역 도메인 모델 추가
+- `app/storage/sqlite_repo.py`
+  - `transactions` 테이블 추가
+  - 거래 upsert/list 기능 추가
+- `app/services/portfolio_api_service.py`
+  - `/api/dashboard`, `/api/accounts`, `/api/transactions`용 payload 생성
+- `week3_api_server.py`
+  - 표준 라이브러리 HTTP 서버 기반 JSON API 제공
+
+실행:
+
+```bash
+# 1) 데이터 적재 (계좌 + 거래내역)
+python week1_bootstrap.py
+
+# 2) API 서버 실행
+python week3_api_server.py
+
+# 3) 확인
+# http://localhost:8100/api/dashboard
+# http://localhost:8100/api/accounts
+# http://localhost:8100/api/transactions?limit=20
+```
