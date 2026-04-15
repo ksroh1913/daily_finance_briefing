@@ -194,3 +194,30 @@ class PortfolioRepository:
             )
             for row in rows
         ]
+
+    def list_transactions_between(self, start: datetime, end: datetime) -> list[AccountTransaction]:
+        with self._connect() as conn:
+            rows = conn.execute(
+                """
+                SELECT tx_id, institution_name, account_num_masked,
+                       tx_type, amount, currency, occurred_at, memo
+                FROM transactions
+                WHERE occurred_at >= ? AND occurred_at < ?
+                ORDER BY occurred_at DESC
+                """,
+                (start.isoformat(), end.isoformat()),
+            ).fetchall()
+
+        return [
+            AccountTransaction(
+                tx_id=row[0],
+                institution_name=row[1],
+                account_num_masked=row[2],
+                tx_type=row[3],
+                amount=Decimal(row[4]),
+                currency=row[5],
+                occurred_at=datetime.fromisoformat(row[6]),
+                memo=row[7],
+            )
+            for row in rows
+        ]

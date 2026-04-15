@@ -143,3 +143,30 @@ python week3_api_server.py
 # http://localhost:8100/api/accounts
 # http://localhost:8100/api/transactions?limit=20
 ```
+
+## 4주 로드맵 - 4주차 구현 상태
+
+4주차 목표(리포트 아카이브 + 알림/모니터링) 반영:
+
+- `app/services/portfolio_report_service.py`
+  - 월간 거래 리포트(inflow/outflow/net/by_type) 생성
+  - 시스템 헬스 상태(has_snapshot/account_count/last_snapshot_at) 생성
+- `week4_report_and_alert.py`
+  - 월간 리포트 JSON + 헬스 JSON 파일 생성
+  - 헬스 warning 시 콘솔 알림 출력
+- `app/storage/sqlite_repo.py`
+  - 기간별 거래 조회 `list_transactions_between()` 추가
+
+실행:
+
+```bash
+# 1) 기초 데이터 적재
+python week1_bootstrap.py
+
+# 2) 4주차 리포트/헬스 생성
+python week4_report_and_alert.py
+
+# 3) 결과 확인
+# reports/portfolio-monthly-YYYY-MM.json
+# reports/portfolio-health.json
+```
