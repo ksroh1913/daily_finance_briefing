@@ -182,3 +182,21 @@ python week4_report_and_alert.py
 # reports/portfolio-monthly-YYYY-MM.json
 # reports/portfolio-health.json
 ```
+
+## 4주 로드맵 이후 - 운영 자동화(Week-5)
+
+운영 안정화를 위해 portfolio 파이프라인 자동 점검 단계를 추가:
+
+- `week5_operational_check.py`
+  - `week1_bootstrap.py` → `week2_dashboard.py` → `week4_report_and_alert.py` 순서 실행
+  - 핵심 결과물 존재 여부 검증
+- `.github/workflows/portfolio-ops.yml`
+  - 매일 KST 10:30 실행
+  - 테스트 + 운영 점검 실행
+  - `reports/` 변경 시 자동 커밋
+
+실행:
+
+```bash
+python week5_operational_check.py
+```
