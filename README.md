@@ -87,3 +87,30 @@ python week1_bootstrap.py
 결과:
 - `reports/portfolio.db` 생성
 - 최신 스냅샷 저장
+
+## 4주 로드맵 - 2주차 구현 상태
+
+2주차 목표(대시보드 KPI/기관별 요약/계좌목록) 반영:
+
+- `app/services/portfolio_dashboard_service.py`
+  - `portfolio.db`에서 최신 스냅샷 + 계좌목록을 읽어 화면 컨텍스트 생성
+- `app/render/templates/portfolio_dashboard.html`
+  - KPI 카드(총자산/계좌수/기관수)
+  - 기관별 금액 표
+  - 계좌 목록 표
+- `week2_dashboard.py`
+  - 대시보드 HTML(`reports/portfolio-dashboard.html`) 생성
+
+실행:
+
+```bash
+# 1) 1주차 스냅샷 생성
+python week1_bootstrap.py
+
+# 2) 2주차 대시보드 렌더링
+python week2_dashboard.py
+
+# 3) 브라우저 확인
+python -m http.server 8000
+# http://localhost:8000/reports/portfolio-dashboard.html
+```

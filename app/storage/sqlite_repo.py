@@ -93,3 +93,28 @@ class PortfolioRepository:
             total_assets_krw=Decimal(row[1]),
             account_count=int(row[2]),
         )
+
+    def list_accounts(self) -> list[ExternalAccount]:
+        with self._connect() as conn:
+            rows = conn.execute(
+                """
+                SELECT institution_code, institution_name, account_num_masked,
+                       account_holder, account_type, currency, balance, fetched_at
+                FROM accounts
+                ORDER BY institution_name, account_num_masked
+                """
+            ).fetchall()
+
+        return [
+            ExternalAccount(
+                institution_code=row[0],
+                institution_name=row[1],
+                account_num_masked=row[2],
+                account_holder=row[3],
+                account_type=row[4],
+                currency=row[5],
+                balance=Decimal(row[6]),
+                fetched_at=datetime.fromisoformat(row[7]),
+            )
+            for row in rows
+        ]
