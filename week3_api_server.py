@@ -1,11 +1,18 @@
 from __future__ import annotations
 
 import json
+import os
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlparse
 
 from app.services.portfolio_api_service import PortfolioApiService
 from app.storage.sqlite_repo import PortfolioRepository
+
+
+def is_authorized(headers: dict[str, str], api_key: str | None) -> bool:
+    if not api_key:
+        return True
+    return headers.get("X-API-Key") == api_key
 
 
 class PortfolioApiHandler(BaseHTTPRequestHandler):
@@ -21,6 +28,11 @@ class PortfolioApiHandler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def do_GET(self) -> None:  # noqa: N802
+        api_key = os.getenv("PORTFOLIO_API_KEY")
+        if not is_authorized(dict(self.headers.items()), api_key):
+            self._respond_json({"error": "Unauthorized"}, status=401)
+            return
+
         parsed = urlparse(self.path)
         if parsed.path == "/api/dashboard":
             self._respond_json(self.service.dashboard())
@@ -45,6 +57,7 @@ def main() -> None:
     print("- /api/dashboard")
     print("- /api/accounts")
     print("- /api/transactions?limit=20")
+    print("* Optional auth: set PORTFOLIO_API_KEY and send X-API-Key header")
     try:
         server.serve_forever()
     except KeyboardInterrupt:

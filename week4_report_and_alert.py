@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import json
+import os
 from datetime import datetime
 from pathlib import Path
 
+from app.services.alert_notifier import AlertNotifier
 from app.services.portfolio_report_service import PortfolioReportService
 from app.storage.sqlite_repo import PortfolioRepository
 
@@ -25,8 +27,17 @@ def main() -> None:
     monthly_path.write_text(json.dumps(monthly, ensure_ascii=False, indent=2), encoding="utf-8")
     health_path.write_text(json.dumps(health, ensure_ascii=False, indent=2), encoding="utf-8")
 
+    webhook_url = os.getenv("ALERT_WEBHOOK_URL")
+    notifier = AlertNotifier(webhook_url=webhook_url)
+
     if health["status"] != "ok":
-        print(f"[WEEK4:ALERT] health warning: {health}")
+        payload = {
+            "type": "portfolio_health_warning",
+            "health": health,
+            "monthly": monthly,
+        }
+        sent = notifier.send(payload)
+        print(f"[WEEK4:ALERT] warning sent={sent} health={health}")
     else:
         print(f"[WEEK4] monthly={monthly_path} health={health_path}")
 

@@ -146,6 +146,10 @@ python week3_api_server.py
 # http://localhost:8100/api/dashboard
 # http://localhost:8100/api/accounts
 # http://localhost:8100/api/transactions?limit=20
+
+# (선택) API 키 보호
+# export PORTFOLIO_API_KEY="your-secret"
+# curl -H "X-API-Key: your-secret" http://localhost:8100/api/dashboard
 ```
 
 ## 4주 로드맵 - 4주차 구현 상태
@@ -169,6 +173,10 @@ python week1_bootstrap.py
 
 # 2) 4주차 리포트/헬스 생성
 python week4_report_and_alert.py
+
+# (선택) 헬스 warning 시 웹훅 알림
+# export ALERT_WEBHOOK_URL="https://your.webhook/url"
+# python week4_report_and_alert.py
 
 # 3) 결과 확인
 # reports/portfolio-monthly-YYYY-MM.json
