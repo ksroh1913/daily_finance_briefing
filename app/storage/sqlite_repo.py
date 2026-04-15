@@ -31,7 +31,8 @@ class PortfolioRepository:
                     account_type TEXT NOT NULL,
                     currency TEXT NOT NULL,
                     balance TEXT NOT NULL,
-                    fetched_at TEXT NOT NULL
+                    fetched_at TEXT NOT NULL,
+                    fintech_use_num TEXT
                 )
                 """
             )
@@ -62,15 +63,27 @@ class PortfolioRepository:
             )
             conn.commit()
 
+    def _has_column(self, table: str, column: str) -> bool:
+        with self._connect() as conn:
+            rows = conn.execute(f"PRAGMA table_info({table})").fetchall()
+        return any(r[1] == column for r in rows)
+
+    def _ensure_migrations(self) -> None:
+        if not self._has_column("accounts", "fintech_use_num"):
+            with self._connect() as conn:
+                conn.execute("ALTER TABLE accounts ADD COLUMN fintech_use_num TEXT")
+                conn.commit()
+
     def replace_accounts(self, accounts: list[ExternalAccount]) -> None:
+        self._ensure_migrations()
         with self._connect() as conn:
             conn.execute("DELETE FROM accounts")
             conn.executemany(
                 """
                 INSERT INTO accounts (
                     institution_code, institution_name, account_num_masked,
-                    account_holder, account_type, currency, balance, fetched_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                    account_holder, account_type, currency, balance, fetched_at, fintech_use_num
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 [
                     (
@@ -82,6 +95,7 @@ class PortfolioRepository:
                         a.currency,
                         str(a.balance),
                         a.fetched_at.isoformat(),
+                        a.fintech_use_num,
                     )
                     for a in accounts
                 ],
@@ -111,11 +125,12 @@ class PortfolioRepository:
         )
 
     def list_accounts(self) -> list[ExternalAccount]:
+        self._ensure_migrations()
         with self._connect() as conn:
             rows = conn.execute(
                 """
                 SELECT institution_code, institution_name, account_num_masked,
-                       account_holder, account_type, currency, balance, fetched_at
+                       account_holder, account_type, currency, balance, fetched_at, fintech_use_num
                 FROM accounts
                 ORDER BY institution_name, account_num_masked
                 """
@@ -131,6 +146,7 @@ class PortfolioRepository:
                 currency=row[5],
                 balance=Decimal(row[6]),
                 fetched_at=datetime.fromisoformat(row[7]),
+                fintech_use_num=row[8],
             )
             for row in rows
         ]

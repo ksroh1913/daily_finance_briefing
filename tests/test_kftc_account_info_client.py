@@ -14,6 +14,7 @@ def test_normalize_live_rows_maps_required_fields() -> None:
             "account_type_name": "입출금",
             "currency_code": "KRW",
             "balance_amt": "1200",
+            "fintech_use_num": "199000000000000000000000",
         }
     ]
 
@@ -23,6 +24,7 @@ def test_normalize_live_rows_maps_required_fields() -> None:
     assert accounts[0].institution_code == "097"
     assert accounts[0].institution_name == "테스트은행"
     assert accounts[0].balance == Decimal("1200")
+    assert accounts[0].fintech_use_num == "199000000000000000000000"
 
 
 def test_normalize_live_rows_defaults_when_fields_missing() -> None:
@@ -34,3 +36,4 @@ def test_normalize_live_rows_defaults_when_fields_missing() -> None:
     assert accounts[0].institution_code == "unknown"
     assert accounts[0].currency == "KRW"
     assert accounts[0].balance == Decimal("0")
+    assert accounts[0].fintech_use_num is None

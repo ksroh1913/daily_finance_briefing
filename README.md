@@ -82,6 +82,10 @@ export KFTC_ACCESS_TOKEN="<token>"
 export KFTC_USER_SEQ_NO="<user_seq_no>"
 export KFTC_AUTH_CODE="<auth_code>"
 python week1_bootstrap.py
+
+# 라이브 모드에서 계좌별 잔액(balance/fin_num)까지 조회하려면
+export KFTC_INCLUDE_BALANCE=true
+python week1_bootstrap.py
 ```
 
 결과:

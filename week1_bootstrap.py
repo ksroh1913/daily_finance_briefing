@@ -37,12 +37,13 @@ def load_sample_transactions(path: str = "config/week3_sample_transactions.json"
 
 def main() -> None:
     use_sample = os.getenv("KFTC_USE_SAMPLE", "true").lower() == "true"
+    include_balance = os.getenv("KFTC_INCLUDE_BALANCE", "false").lower() == "true"
 
     client = KftcAccountInfoClient(sample_path="config/week1_sample_accounts.json")
     repo = PortfolioRepository(db_path="reports/portfolio.db")
     snapshot_service = PortfolioSnapshotService()
 
-    accounts = client.fetch_accounts(use_sample=use_sample)
+    accounts = client.fetch_accounts(use_sample=use_sample, include_balance=include_balance)
     repo.replace_accounts(accounts)
 
     snapshot = snapshot_service.build_snapshot(accounts)
@@ -55,7 +56,7 @@ def main() -> None:
     mode = "SAMPLE" if use_sample else "LIVE"
     print(
         f"[WEEK1:{mode}] imported_accounts={len(accounts)} "
-        f"total_assets_krw={snapshot.total_assets_krw} imported_txs={len(txs)}"
+        f"total_assets_krw={snapshot.total_assets_krw} imported_txs={len(txs)} include_balance={include_balance}"
     )
 
 

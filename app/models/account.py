@@ -15,6 +15,7 @@ class ExternalAccount:
     currency: str
     balance: Decimal
     fetched_at: datetime
+    fintech_use_num: str | None = None
 
 
 @dataclass(slots=True)

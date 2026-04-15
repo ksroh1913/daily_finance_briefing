@@ -27,19 +27,30 @@ class KftcAccountInfoClient:
 
     - 샘플 모드: 로컬 JSON을 읽어 개발/테스트
     - 라이브 모드: 금융결제원 accountinfo/list 호출
+    - 옵션: 계좌별 balance/fin_num 추가 조회
     """
 
     def __init__(self, sample_path: str = "config/week1_sample_accounts.json", timeout: int = 15) -> None:
         self.sample_path = Path(sample_path)
         self.timeout = timeout
 
-    def fetch_accounts(self, use_sample: bool = True, config: KftcApiConfig | None = None) -> list[ExternalAccount]:
+    def fetch_accounts(
+        self,
+        use_sample: bool = True,
+        config: KftcApiConfig | None = None,
+        include_balance: bool = False,
+    ) -> list[ExternalAccount]:
         if use_sample:
             return self._load_sample_accounts()
 
         live_config = config or self._config_from_env()
         rows = self._fetch_account_list(live_config)
-        return self._normalize_live_rows(rows)
+        accounts = self._normalize_live_rows(rows)
+
+        if include_balance:
+            self._fill_balances(accounts, live_config)
+
+        return accounts
 
     def _load_sample_accounts(self) -> list[ExternalAccount]:
         if not self.sample_path.exists():
@@ -78,6 +89,36 @@ class KftcAccountInfoClient:
             raise RuntimeError("Invalid response: res_list is not a list")
         return rows
 
+    def _fetch_balance(self, fintech_use_num: str, config: KftcApiConfig) -> Decimal | None:
+        url = f"{config.api_base}/v2.0/account/balance/fin_num"
+        headers = {
+            "Authorization": f"Bearer {config.access_token}",
+            "Content-Type": "application/json; charset=UTF-8",
+        }
+        body = {
+            "bank_tran_id": self._build_bank_tran_id(),
+            "fintech_use_num": fintech_use_num,
+            "tran_dtime": datetime.now().strftime("%Y%m%d%H%M%S"),
+        }
+
+        try:
+            response = requests.post(url, headers=headers, json=body, timeout=self.timeout)
+            response.raise_for_status()
+            payload = response.json()
+            if payload.get("rsp_code") not in {"A0000", "000"}:
+                return None
+            return Decimal(str(payload.get("balance_amt", "0")))
+        except Exception:
+            return None
+
+    def _fill_balances(self, accounts: list[ExternalAccount], config: KftcApiConfig) -> None:
+        for account in accounts:
+            if not account.fintech_use_num:
+                continue
+            balance = self._fetch_balance(account.fintech_use_num, config)
+            if balance is not None:
+                account.balance = balance
+
     def _normalize_sample_rows(self, rows: list[dict[str, Any]]) -> list[ExternalAccount]:
         accounts: list[ExternalAccount] = []
         for row in rows:
@@ -91,6 +132,7 @@ class KftcAccountInfoClient:
                     currency=str(row.get("currency", "KRW")),
                     balance=Decimal(str(row["balance"])),
                     fetched_at=datetime.fromisoformat(row["fetched_at"]),
+                    fintech_use_num=row.get("fintech_use_num"),
                 )
             )
         return accounts
@@ -108,16 +150,15 @@ class KftcAccountInfoClient:
                     account_holder=str(row.get("account_holder_name") or "unknown"),
                     account_type=str(row.get("account_type") or row.get("account_type_name") or "입출금"),
                     currency=str(row.get("currency_code") or "KRW"),
-                    # accountinfo/list 응답엔 잔액이 없을 수 있어 0으로 초기화 (balance API 단계에서 업데이트)
                     balance=Decimal(str(row.get("balance_amt") or "0")),
                     fetched_at=fetched_at,
+                    fintech_use_num=row.get("fintech_use_num"),
                 )
             )
         return accounts
 
     @staticmethod
     def _build_bank_tran_id() -> str:
-        # 실제 운영 시 이용기관 코드를 앞자리로 붙여야 함
         return f"M202600000U{uuid.uuid4().hex[:9]}"
 
     @staticmethod
