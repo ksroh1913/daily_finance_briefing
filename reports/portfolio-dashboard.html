@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>계좌 대시보드 (Week-2)</title>
+    <style>
+      body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f3f4f6; margin: 0; padding: 24px; color: #111827; }
+      .container { max-width: 980px; margin: 0 auto; background: #fff; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,.08); padding: 20px; }
+      h1 { margin: 0 0 6px; }
+      .meta { color: #6b7280; margin-bottom: 20px; }
+      .kpis { display: grid; gap: 12px; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-bottom: 20px; }
+      .kpi { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; }
+      .kpi .label { color: #6b7280; font-size: 13px; }
+      .kpi .value { margin-top: 6px; font-weight: 700; font-size: 20px; }
+      h2 { margin-top: 24px; margin-bottom: 8px; }
+      table { width: 100%; border-collapse: collapse; }
+      th, td { border: 1px solid #e5e7eb; padding: 10px; text-align: center; }
+      th { background: #f9fafb; }
+      @media (max-width: 720px) {
+        .kpis { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>계좌 대시보드 (Week-2)</h1>
+      <div class="meta">스냅샷 시각: 2026-04-16T04:34:02</div>
+
+      <div class="kpis">
+        <div class="kpi">
+          <div class="label">총자산(KRW)</div>
+          <div class="value">1,700,225</div>
+        </div>
+        <div class="kpi">
+          <div class="label">연동 계좌 수</div>
+          <div class="value">2</div>
+        </div>
+        <div class="kpi">
+          <div class="label">기관 수</div>
+          <div class="value">2</div>
+        </div>
+      </div>
+
+      <h2>기관별 자산(KRW 환산)</h2>
+      <table>
+        <thead>
+          <tr><th>기관</th><th>금액(KRW)</th></tr>
+        </thead>
+        <tbody>
+          
+          <tr><td>가상은행A</td><td>1,250,000</td></tr>
+          
+          <tr><td>가상은행B</td><td>0</td></tr>
+          
+        </tbody>
+      </table>
+
+      <h2>계좌 목록</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>기관</th><th>계좌</th><th>유형</th><th>통화</th><th>잔액</th><th>수집시각</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <td>가상은행A</td>
+            <td>123-***-****</td>
+            <td>입출금</td>
+            <td>KRW</td>
+            <td>1,250,000</td>
+            <td>2026-04-10T10:00:00</td>
+          </tr>
+          
+          <tr>
+            <td>가상은행B</td>
+            <td>987-***-****</td>
+            <td>외화예금</td>
+            <td>USD</td>
+            <td>310.50</td>
+            <td>2026-04-10T10:00:00</td>
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>
