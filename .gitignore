@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+reports/*.db
+.env
+.env.*
+!.env.example

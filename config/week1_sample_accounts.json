@@ -1,0 +1,24 @@
+{
+  "accounts": [
+    {
+      "institution_code": "097",
+      "institution_name": "가상은행A",
+      "account_num_masked": "123-***-****",
+      "account_holder": "홍길동",
+      "account_type": "입출금",
+      "currency": "KRW",
+      "balance": "1250000",
+      "fetched_at": "2026-04-10T10:00:00"
+    },
+    {
+      "institution_code": "088",
+      "institution_name": "가상은행B",
+      "account_num_masked": "987-***-****",
+      "account_holder": "홍길동",
+      "account_type": "외화예금",
+      "currency": "USD",
+      "balance": "310.5",
+      "fetched_at": "2026-04-10T10:00:00"
+    }
+  ]
+}

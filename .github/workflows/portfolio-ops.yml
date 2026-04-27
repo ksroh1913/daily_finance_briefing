@@ -1,0 +1,58 @@
+name: Portfolio Ops Daily
+
+on:
+  schedule:
+    # Runs daily at 10:30 KST (01:30 UTC)
+    - cron: "30 1 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: portfolio-ops-daily
+  cancel-in-progress: false
+
+jobs:
+  run-portfolio-pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+          cache-dependency-path: requirements.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run tests
+        run: pytest -q
+
+      - name: Run portfolio operational check
+        run: python week5_operational_check.py
+
+      - name: Commit and push generated reports
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add reports/
+
+          if git diff --cached --quiet; then
+            echo "No report changes detected."
+            exit 0
+          fi
+
+          KST_DATE=$(TZ=Asia/Seoul date +'%Y-%m-%d')
+          git commit -m "chore: portfolio ops artifacts (${KST_DATE} KST)"
+          git push

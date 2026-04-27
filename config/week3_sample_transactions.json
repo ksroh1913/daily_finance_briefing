@@ -1,0 +1,24 @@
+{
+  "transactions": [
+    {
+      "tx_id": "tx-20260410-001",
+      "institution_name": "가상은행A",
+      "account_num_masked": "123-***-****",
+      "tx_type": "DEPOSIT",
+      "amount": "500000",
+      "currency": "KRW",
+      "occurred_at": "2026-04-10T09:00:00",
+      "memo": "월급"
+    },
+    {
+      "tx_id": "tx-20260410-002",
+      "institution_name": "가상은행B",
+      "account_num_masked": "987-***-****",
+      "tx_type": "WITHDRAWAL",
+      "amount": "120.5",
+      "currency": "USD",
+      "occurred_at": "2026-04-10T12:30:00",
+      "memo": "해외결제"
+    }
+  ]
+}
