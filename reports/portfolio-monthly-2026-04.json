@@ -1,0 +1,12 @@
+{
+  "year": 2026,
+  "month": 4,
+  "tx_count": 2,
+  "inflow": "500000",
+  "outflow": "120.5",
+  "net": "499879.5",
+  "by_type": {
+    "DEPOSIT": "500000",
+    "WITHDRAWAL": "120.5"
+  }
+}

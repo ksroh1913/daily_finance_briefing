@@ -1,0 +1,168 @@
+{
+  "generated_at": "2026-04-13T13:22:19",
+  "as_of": "2026-04-13",
+  "sections": {
+    "국내": [
+      {
+        "section": "국내",
+        "label": "코스피",
+        "symbol": "KS11",
+        "price": 5782.65,
+        "change": -76.22000000000025,
+        "change_pct": -1.3009334564515043,
+        "as_of": "2026-04-13",
+        "status": "down",
+        "error": null,
+        "display_price": "5,782.65",
+        "display_change": "▼ 76.22",
+        "display_change_pct": "1.30%"
+      },
+      {
+        "section": "국내",
+        "label": "코스닥",
+        "symbol": "KQ11",
+        "price": 1096.46,
+        "change": 2.8299999999999272,
+        "change_pct": 0.2587712480454932,
+        "as_of": "2026-04-13",
+        "status": "up",
+        "error": null,
+        "display_price": "1,096.46",
+        "display_change": "▲ 2.83",
+        "display_change_pct": "0.26%"
+      }
+    ],
+    "해외": [
+      {
+        "section": "해외",
+        "label": "다우 산업",
+        "symbol": "DJI",
+        "price": 47916.5703125,
+        "change": -269.23046875,
+        "change_pct": -0.5587340344767345,
+        "as_of": "2026-04-10",
+        "status": "down",
+        "error": null,
+        "display_price": "47,916.57",
+        "display_change": "▼ 269.23",
+        "display_change_pct": "0.56%"
+      },
+      {
+        "section": "해외",
+        "label": "나스닥 종합",
+        "symbol": "IXIC",
+        "price": 22902.890625,
+        "change": 80.470703125,
+        "change_pct": 0.35259496320050554,
+        "as_of": "2026-04-10",
+        "status": "up",
+        "error": null,
+        "display_price": "22,902.89",
+        "display_change": "▲ 80.47",
+        "display_change_pct": "0.35%"
+      },
+      {
+        "section": "해외",
+        "label": "상해 종합",
+        "symbol": "SSEC",
+        "price": 3986.22509765625,
+        "change": 20.05419921875,
+        "change_pct": 0.5056312431380727,
+        "as_of": "2026-04-10",
+        "status": "up",
+        "error": null,
+        "display_price": "3,986.23",
+        "display_change": "▲ 20.05",
+        "display_change_pct": "0.51%"
+      },
+      {
+        "section": "해외",
+        "label": "니케이225",
+        "symbol": "N225",
+        "price": 56924.109375,
+        "change": 1028.7890625,
+        "change_pct": 1.8405638553428767,
+        "as_of": "2026-04-10",
+        "status": "up",
+        "error": null,
+        "display_price": "56,924.11",
+        "display_change": "▲ 1,028.79",
+        "display_change_pct": "1.84%"
+      }
+    ],
+    "환율": [
+      {
+        "section": "환율",
+        "label": "원/달러",
+        "symbol": "USD/KRW",
+        "price": 1473.280029296875,
+        "change": -4.3199462890625,
+        "change_pct": -0.2923623687357899,
+        "as_of": "2026-04-09",
+        "status": "down",
+        "error": null,
+        "display_price": "1,473.28",
+        "display_change": "▼ 4.32",
+        "display_change_pct": "0.29%"
+      },
+      {
+        "section": "환율",
+        "label": "중국 위안/달러",
+        "symbol": "CNY/USD",
+        "price": 0.1463828831911087,
+        "change": -5.78761100769043e-05,
+        "change_pct": -0.03952185877285035,
+        "as_of": "2026-04-09",
+        "status": "down",
+        "error": null,
+        "display_price": "0.15",
+        "display_change": "▼ 0.00",
+        "display_change_pct": "0.04%"
+      }
+    ],
+    "상품": [
+      {
+        "section": "상품",
+        "label": "금",
+        "symbol": "GC=F",
+        "price": 4761.89990234375,
+        "change": -30.30029296875,
+        "change_pct": -0.6322835385380663,
+        "as_of": "2026-04-10",
+        "status": "down",
+        "error": null,
+        "display_price": "4,761.90",
+        "display_change": "▼ 30.30",
+        "display_change_pct": "0.63%"
+      },
+      {
+        "section": "상품",
+        "label": "은",
+        "symbol": "SI=F",
+        "price": 76.3239974975586,
+        "change": 0.0469970703125,
+        "change_pct": 0.06161368439930509,
+        "as_of": "2026-04-10",
+        "status": "up",
+        "error": null,
+        "display_price": "76.32",
+        "display_change": "▲ 0.05",
+        "display_change_pct": "0.06%"
+      },
+      {
+        "section": "상품",
+        "label": "WTI",
+        "symbol": "CL=F",
+        "price": 96.56999969482422,
+        "change": -1.3000030517578125,
+        "change_pct": -1.3282957139829172,
+        "as_of": "2026-04-10",
+        "status": "down",
+        "error": null,
+        "display_price": "96.57",
+        "display_change": "▼ 1.30",
+        "display_change_pct": "1.33%"
+      }
+    ]
+  }
+}
